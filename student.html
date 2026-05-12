@@ -89,6 +89,7 @@
   .modal-body{font-size:14px;color:var(--text-muted);line-height:1.6;}
   .modal-btn{margin-top:20px;padding:10px 28px;background:var(--blue);color:white;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div class="container">
@@ -140,7 +141,7 @@
       </div>
       <div class="card">
         <div class="section-label">카테고리 선택</div>
-        <div class="check-group">
+        <div class="check-group" id="cat-checks-1">
           <label class="check-item"><input type="checkbox" onchange="toggleSub(this,'sub-subject')"/> 수행평가</label>
           <label class="check-item"><input type="checkbox"/> 동아리</label>
           <label class="check-item"><input type="checkbox"/> 진로</label>
@@ -150,7 +151,7 @@
         </div>
         <div class="sub-checks" id="sub-subject" style="display:none;">
           <div class="sub-label">수행평가 과목 선택</div>
-          <div class="check-group">
+          <div class="check-group" id="sub-checks-1">
             <label class="check-item"><input type="checkbox"/> 국어</label>
             <label class="check-item"><input type="checkbox"/> 수학</label>
             <label class="check-item"><input type="checkbox"/> 영어</label>
@@ -175,7 +176,7 @@
       </div>
       <div class="card">
         <div class="section-label">요청 내용</div>
-        <textarea rows="4" placeholder="궁금한 점이나 요청사항을 자유롭게 작성해주세요..."></textarea>
+        <textarea id="content1" rows="4" placeholder="궁금한 점이나 요청사항을 자유롭게 작성해주세요..."></textarea>
       </div>
       <div class="card">
         <div class="section-label">파일 첨부 <span style="font-size:11px;background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:20px;margin-left:6px;">선택</span></div>
@@ -193,7 +194,7 @@
     <div id="tab-seteuk" style="display:none;">
       <div class="card">
         <div class="section-label">카테고리 선택</div>
-        <div class="check-group">
+        <div class="check-group" id="cat-checks-2">
           <label class="check-item"><input type="checkbox"/> 교과세특</label>
           <label class="check-item"><input type="checkbox"/> 자율·진로·동아리</label>
           <label class="check-item"><input type="checkbox"/> 행특</label>
@@ -217,7 +218,7 @@
       </div>
       <div class="card">
         <div class="section-label">요청 내용</div>
-        <textarea rows="4" placeholder="세특 관련 요청사항을 작성해주세요..."></textarea>
+        <textarea id="content2" rows="4" placeholder="세특 관련 요청사항을 작성해주세요..."></textarea>
       </div>
       <div class="card">
         <div class="section-label">파일 첨부 <span style="font-size:11px;background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:20px;margin-left:6px;">선택</span></div>
@@ -244,17 +245,24 @@
 </div>
 
 <script>
-// 더미 학생 DB (나중에 Supabase로 교체)
+const _sb = window.supabase.createClient(
+  'https://sedqqnomjzhbfoogymen.supabase.co',
+  'sb_publishable_BarBoWKe163lWCgJsUxaoA_UTmrKjKf'
+);
+
 var DB = {
   '2025001':{name:'김민준',school:'상원고2',career:'의예과',product:'학년관리',band:'https://band.us/band/101267850/post/4',lastLogin:'2026년 05월 10일'},
   '2025002':{name:'이서연',school:'경북여고2',career:'약학과',product:'기재관리',band:'https://band.us/band/101267850/post/4',lastLogin:'2026년 05월 09일'},
   '2025003':{name:'박지호',school:'대구고1',career:'컴퓨터공학',product:'성적누적',band:'https://band.us/band/101267850/post/4',lastLogin:'2026년 05월 08일'},
 };
+var currentStudent = null;
+
 function doLogin(){
   var name=document.getElementById('input-name').value.trim();
   var id=document.getElementById('input-id').value.trim();
   var s=DB[id];
   if(!s||s.name!==name){document.getElementById('login-err').style.display='flex';return;}
+  currentStudent={id:id,name:s.name,school:s.school,career:s.career,product:s.product};
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('main-screen').classList.remove('hidden');
   document.getElementById('profile-name').textContent=s.name;
@@ -293,12 +301,59 @@ function showFile(inputId,nameId){
   var el=document.getElementById(nameId);
   el.textContent='📎 '+f.name;el.style.display='block';
 }
-function submit(n){
+async function submit(n){
   var checked=document.querySelector('input[name="dl'+n+'"]:checked');
   if(!checked){
     var err=document.getElementById('err'+n);
     err.style.display='flex';
     err.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+
+  // 카테고리 수집
+  var cats=[];
+  document.querySelectorAll('#cat-checks-'+n+' input[type=checkbox]:checked').forEach(function(cb){
+    cats.push(cb.closest('label').textContent.trim());
+  });
+  if(n==='1'){
+    document.querySelectorAll('#sub-checks-1 input[type=checkbox]:checked').forEach(function(cb){
+      cats.push('수행평가-'+cb.closest('label').textContent.trim());
+    });
+  }
+  if(n==='2'){
+    var etcInput=document.querySelector('#etc-input input');
+    if(etcInput && etcInput.value.trim()) cats.push('기타: '+etcInput.value.trim());
+  }
+
+  var deadlineType=checked.value;
+  var deadlineDate=(deadlineType==='date')?document.getElementById('date'+n).value||null:null;
+  var content=document.getElementById('content'+n).value.trim();
+  var fileInput=document.getElementById('file'+n);
+  var fileName=fileInput.files[0]?fileInput.files[0].name:null;
+
+  var btn=document.querySelector('#tab-'+(n==='1'?'topic':'seteuk')+' .submit-btn');
+  btn.disabled=true;
+  btn.textContent='제출 중...';
+
+  var {error}=await _sb.from('requests').insert([{
+    student_name: currentStudent.name,
+    student_id:   currentStudent.id,
+    school:       currentStudent.school,
+    career:       currentStudent.career,
+    product:      currentStudent.product,
+    request_type: n==='1'?'topic':'seteuk',
+    categories:   cats.join(', ')||null,
+    deadline_type: deadlineType,
+    deadline_date: deadlineDate,
+    content:      content||null,
+    file_name:    fileName
+  }]);
+
+  btn.disabled=false;
+  btn.textContent=n==='1'?'주제추천 요청 제출 →':'세특관리 요청 제출 →';
+
+  if(error){
+    alert('제출 오류: '+error.message);
     return;
   }
   document.getElementById('modal').classList.add('show');
