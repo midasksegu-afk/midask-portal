@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이더스K & 세특구원자 · 관리자</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+  :root{
+    --blue:#185FA5;--blue-light:#E6F1FB;
+    --green:#3B6D11;--green-light:#EAF3DE;
+    --amber:#854F0B;--amber-light:#FAEEDA;
+    --red:#A32D2D;--red-light:#FCEBEB;
+    --purple:#534AB7;--purple-light:#EEEDFE;
+    --bg:#F0F2F0;--surface:#FFFFFF;--border:rgba(0,0,0,0.1);
+    --text:#1a1a1a;--text-muted:#666;--text-hint:#999;
+    --radius:10px;--radius-sm:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px 16px 60px;}
+  .container{max-width:760px;margin:0 auto;}
+  .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+  .header-left{display:flex;align-items:center;gap:12px;}
+  .logo{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--green);display:flex;align-items:center;justify-content:center;font-size:20px;color:white;}
+  .htitle{font-size:16px;font-weight:700;}
+  .hsub{font-size:12px;color:var(--text-muted);margin-top:2px;}
+  .admin-badge{font-size:12px;background:var(--green-light);color:var(--green);padding:5px 14px;border-radius:20px;font-weight:700;}
+  .tab-bar{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:4px;margin-bottom:20px;}
+  .tab{flex:1;padding:9px 8px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-radius:7px;text-align:center;transition:all 0.15s;}
+  .tab.active{background:var(--green);color:white;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;}
+  .section-label{font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;}
+  .field-label{font-size:13px;color:var(--text-muted);margin-bottom:6px;margin-top:12px;}
+  .field-label:first-child{margin-top:0;}
+  input[type=text],textarea,select{width:100%;font-family:'Noto Sans KR',sans-serif;font-size:14px;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fafafa;color:var(--text);outline:none;transition:border-color 0.15s;}
+  input:focus,textarea:focus,select:focus{border-color:var(--green);background:white;}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+  .stat-label{font-size:12px;color:var(--text-muted);margin-bottom:6px;}
+  .stat-num{font-size:28px;font-weight:700;}
+  .stat-num.red{color:var(--red);}
+  .stat-num.green{color:var(--green);}
+  .stat-num.blue{color:var(--blue);}
+  .filter-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+  .filter-btn{font-size:12px;padding:5px 12px;border:1px solid var(--border);border-radius:20px;cursor:pointer;background:var(--surface);color:var(--text-muted);font-family:'Noto Sans KR',sans-serif;transition:all 0.12s;}
+  .filter-btn.active{background:var(--green-light);color:var(--green);border-color:var(--green);font-weight:700;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;padding:8px 10px;color:var(--text-muted);font-weight:500;font-size:12px;border-bottom:1px solid var(--border);}
+  td{padding:11px 10px;border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover td{background:#f8f9f8;cursor:pointer;}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:700;}
+  .badge-new{background:var(--red-light);color:var(--red);}
+  .badge-done{background:var(--green-light);color:var(--green);}
+  .badge-topic{background:var(--blue-light);color:var(--blue);}
+  .badge-seteuk{background:var(--purple-light);color:var(--purple);}
+  .badge-urgent{background:var(--red-light);color:var(--red);}
+  .badge-warning{background:var(--amber-light);color:var(--amber);}
+  .badge-normal{background:var(--blue-light);color:var(--blue);}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+  .add-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:8px 16px;border:1px solid var(--green);border-radius:var(--radius-sm);color:var(--green);background:var(--surface);cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-bottom:14px;font-weight:500;}
+  .add-btn:hover{background:var(--green-light);}
+  .detail-box{background:#f8f9f8;border-radius:var(--radius-sm);padding:12px 14px;font-size:13px;color:var(--text-muted);line-height:1.7;margin-top:10px;}
+  .detail-box strong{color:var(--text);}
+  .detail-box.result{background:var(--green-light);}
+  .detail-box.result strong{color:var(--green);}
+  .action-row{display:flex;gap:8px;margin-top:14px;}
+  .btn-primary{flex:1;padding:10px;background:var(--green);color:white;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+  .btn-primary:hover{background:#2d5209;}
+  .btn-secondary{flex:1;padding:10px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+  .student-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+  .student-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;background:#fafafa;transition:all 0.12s;}
+  .student-item:hover,.student-item.active{border-color:var(--green);background:var(--green-light);}
+  .student-name{font-size:14px;font-weight:500;}
+  .student-meta{font-size:12px;color:var(--text-muted);margin-top:2px;}
+
+  /* 설정 탭 */
+  .product-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+  .product-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:#fafafa;}
+  .product-item input{flex:1;margin:0;}
+  .del-btn{padding:6px 12px;background:var(--red-light);color:var(--red);border:1px solid var(--red);border-radius:var(--radius-sm);font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;font-weight:500;white-space:nowrap;}
+  .del-btn:hover{background:var(--red);color:white;}
+  .save-btn{width:100%;padding:12px;background:var(--green);color:white;border:none;border-radius:var(--radius);font-size:14px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;margin-top:4px;}
+  .save-btn:hover{background:#2d5209;}
+  .setting-section{margin-bottom:24px;}
+  .setting-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+  .hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">🛡️</div>
+      <div>
+        <div class="htitle">마이더스K &amp; 세특구원자</div>
+        <div class="hsub">관리자 페이지</div>
+      </div>
+    </div>
+    <div class="admin-badge">👤 midask01</div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('dash',this)">📊 대시보드</div>
+    <div class="tab" onclick="switchTab('students',this)">👥 학생 관리</div>
+    <div class="tab" onclick="switchTab('requests',this)">📋 요청 처리</div>
+    <div class="tab" onclick="switchTab('settings',this)">⚙️ 설정</div>
+  </div>
+
+  <!-- 대시보드 -->
+  <div id="tab-dash">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">미처리 요청</div><div class="stat-num red">7</div></div>
+      <div class="stat-card"><div class="stat-label">오늘 신규</div><div class="stat-num blue">3</div></div>
+      <div class="stat-card"><div class="stat-label">처리 완료</div><div class="stat-num green">24</div></div>
+    </div>
+    <div class="card">
+      <div class="section-label">신규 요청 현황</div>
+      <div class="filter-row">
+        <button class="filter-btn active" onclick="setFilter(this)">전체</button>
+        <button class="filter-btn" onclick="setFilter(this)">주제추천</button>
+        <button class="filter-btn" onclick="setFilter(this)">세특관리</button>
+        <button class="filter-btn" onclick="setFilter(this)">미처리만</button>
+        <button class="filter-btn" onclick="setFilter(this)">긴급</button>
+      </div>
+      <table>
+        <thead><tr><th>학생</th><th>구분</th><th>카테고리</th><th>마감</th><th>제출</th><th>상태</th></tr></thead>
+        <tbody>
+          <tr onclick="goRequest()"><td><strong>김민준</strong></td><td><span class="badge badge-topic">주제추천</span></td><td>수행평가 · 생명과학</td><td><span class="badge badge-urgent">긴급 D-2</span></td><td style="color:var(--text-muted)">오늘 14:32</td><td><span class="badge badge-new">미처리</span></td></tr>
+          <tr onclick="goRequest()"><td><strong>이서연</strong></td><td><span class="badge badge-seteuk">세특관리</span></td><td>교과세특</td><td><span class="badge badge-warning">주의 D-5</span></td><td style="color:var(--text-muted)">오늘 13:10</td><td><span class="badge badge-new">미처리</span></td></tr>
+          <tr onclick="goRequest()"><td><strong>박지호</strong></td><td><span class="badge badge-topic">주제추천</span></td><td>동아리</td><td><span class="badge badge-normal">여유 D-14</span></td><td style="color:var(--text-muted)">오늘 11:05</td><td><span class="badge badge-new">미처리</span></td></tr>
+          <tr><td><strong>최수아</strong></td><td><span class="badge badge-seteuk">세특관리</span></td><td>자율·진로·동아리</td><td><span class="badge badge-normal">미정</span></td><td style="color:var(--text-muted)">어제 18:44</td><td><span class="badge badge-done">완료</span></td></tr>
+          <tr><td><strong>정도윤</strong></td><td><span class="badge badge-topic">주제추천</span></td><td>진로</td><td><span class="badge badge-normal">여유 D-10</span></td><td style="color:var(--text-muted)">어제 16:20</td><td><span class="badge badge-done">완료</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 학생 관리 -->
+  <div id="tab-students" class="hidden">
+    <button class="add-btn" onclick="alert('학생 등록 폼')">＋ 학생 등록</button>
+    <div style="display:grid;grid-template-columns:200px 1fr;gap:12px;">
+      <div class="student-list">
+        <div class="student-item active"><div><div class="student-name">김민준</div><div class="student-meta">2025001 · midask01</div></div></div>
+        <div class="student-item"><div><div class="student-name">이서연</div><div class="student-meta">2025002 · midask01</div></div></div>
+        <div class="student-item"><div><div class="student-name">박지호</div><div class="student-meta">2025003 · midask02</div></div></div>
+        <div class="student-item"><div><div class="student-name">최수아</div><div class="student-meta">2025004 · midask02</div></div></div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="section-label">학생 정보 · 김민준 (2025001)</div>
+        <div class="two-col">
+          <div><div class="field-label">이름</div><input type="text" value="김민준"/></div>
+          <div><div class="field-label">고유번호</div><input type="text" value="2025001"/></div>
+        </div>
+        <div class="three-col">
+          <div><div class="field-label">학교</div><input type="text" value="상원고등학교"/></div>
+          <div><div class="field-label">학년/반</div><input type="text" value="2학년 3반"/></div>
+          <div><div class="field-label">담당</div><select><option>midask01</option><option>midask02</option><option>midask03</option></select></div>
+        </div>
+        <div class="field-label">진로 목표</div><input type="text" value="의예과"/>
+        <div class="field-label">관심 과목</div><input type="text" value="생명과학, 화학, 수학"/>
+        <div class="field-label">상품명</div>
+        <select id="product-select">
+          <option>학년관리</option>
+          <option>기재관리</option>
+          <option>성적누적</option>
+        </select>
+        <div class="field-label">밴드 게시판 링크</div><input type="text" value="https://band.us/band/101267850/post/4"/>
+        <div class="field-label">메모</div><textarea rows="2">의대 목표, 생기부 집중 관리 필요</textarea>
+        <div class="action-row">
+          <button class="btn-primary" onclick="alert('저장되었습니다!')">저장</button>
+          <button class="btn-secondary">초기화</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 요청 처리 -->
+  <div id="tab-requests" class="hidden">
+    <div class="card">
+      <div class="section-label">요청 상세 · 김민준 · 주제추천</div>
+      <div class="detail-box"><strong>학생 기본정보</strong><br>상원고등학교 · 2학년 3반 · 진로: 의예과<br>관심 과목: 생명과학, 화학, 수학 · 상품: 학년관리</div>
+      <div class="detail-box" style="margin-top:8px;"><strong>요청 내용</strong><br>카테고리: 수행평가 · 생명과학 · <span class="badge badge-urgent">긴급 D-2</span><br><br>"세포분열 관련 수행평가 주제 추천해주세요. 탐구보고서 형식입니다."</div>
+      <div class="detail-box" style="margin-top:8px;"><strong>첨부파일</strong><br>📎 수행평가_공지문.pdf</div>
+      <div class="detail-box result" style="margin-top:8px;"><strong>🤖 Claude 처리 결과 (egu-linking-motivation 스킬)</strong><br><br><span style="color:var(--green);">1. 세포 분열과 암 발생 메커니즘 비교 탐구<br>2. 식물 세포와 동물 세포의 분열 방식 차이 실험<br>3. 세포 주기 조절 유전자와 질병의 연관성 분석</span></div>
+      <div class="action-row">
+        <button class="btn-primary" onclick="alert('완료 처리!')">✅ 완료 처리</button>
+        <button class="btn-secondary">✏️ 수동 수정</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 설정 -->
+  <div id="tab-settings" class="hidden">
+
+    <div class="card">
+      <div class="setting-title">📦 상품명 관리</div>
+      <div class="product-list" id="product-list">
+        <div class="product-item"><input type="text" value="학년관리"/><button class="del-btn" onclick="delProduct(this)">삭제</button></div>
+        <div class="product-item"><input type="text" value="기재관리"/><button class="del-btn" onclick="delProduct(this)">삭제</button></div>
+        <div class="product-item"><input type="text" value="성적누적"/><button class="del-btn" onclick="delProduct(this)">삭제</button></div>
+      </div>
+      <button class="add-btn" onclick="addProduct()">＋ 상품 추가</button>
+      <button class="save-btn" onclick="alert('상품명이 저장되었습니다!')">저장</button>
+    </div>
+
+    <div class="card">
+      <div class="setting-title">👤 컨설턴트 계정</div>
+      <div class="product-list">
+        <div class="product-item"><input type="text" value="midask01"/><button class="del-btn">삭제</button></div>
+        <div class="product-item"><input type="text" value="midask02"/><button class="del-btn">삭제</button></div>
+        <div class="product-item"><input type="text" value="midask03"/><button class="del-btn">삭제</button></div>
+      </div>
+      <button class="add-btn" onclick="alert('계정 추가')">＋ 계정 추가</button>
+      <button class="save-btn" onclick="alert('저장되었습니다!')">저장</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function switchTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  ['dash','students','requests','settings'].forEach(t=>{
+    document.getElementById('tab-'+t).className=t===name?'':'hidden';
+  });
+}
+function setFilter(el){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+}
+function goRequest(){
+  document.querySelectorAll('.tab')[2].click();
+}
+function addProduct(){
+  var list=document.getElementById('product-list');
+  var div=document.createElement('div');
+  div.className='product-item';
+  div.innerHTML='<input type="text" placeholder="상품명 입력"/><button class="del-btn" onclick="delProduct(this)">삭제</button>';
+  list.appendChild(div);
+}
+function delProduct(btn){
+  if(document.querySelectorAll('.product-item').length<=1){alert('최소 1개는 있어야 해요!');return;}
+  btn.parentElement.remove();
+}
+</script>
+</body>
+</html>
