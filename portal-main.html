@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: #141a22; }
+    input::placeholder { color: #9aa6b4; }
+    @keyframes mkFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes mkFadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes mkSlideIn { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes mkPop { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+    @keyframes mkPulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,0.18), 0 2px 6px rgba(10,16,24,0.4); } 50% { box-shadow: 0 0 0 10px rgba(255,255,255,0.06), 0 2px 6px rgba(10,16,24,0.4); } }
+  </style>
+</helmet>
+
+<div data-screen-label="마이더스K 포털 로그인 v3" style="position: relative; width: 100%; min-width: 1600px; min-height: calc(100vh / 0.9); zoom: 0.9; overflow: hidden; display: flex; flex-direction: column; background: linear-gradient(180deg, #313d4c 0%, #2a3442 35%, #1d2530 68%, #12171f 100%)">
+
+  <!-- ===== orbital chart backdrop ===== -->
+  <div style="position: absolute; inset: 0; overflow: hidden; pointer-events: none; animation: mkFade 1.2s ease-out both">
+    <div style="position: absolute; inset: 0; background-image: url('assets/bg-orbital.png'); background-size: cover; background-position: center; opacity: 0.45"></div>
+    <div style="position: absolute; left: -10%; top: 8%; width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(120,160,205,0.10) 0%, rgba(120,160,205,0) 60%)"></div>
+    <div style="position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 42%, rgba(0,0,0,0) 55%, rgba(4,7,11,0.55) 100%)"></div>
+  </div>
+
+  <!-- ===== top bar (F zone: text only, larger, no shadow) ===== -->
+  <div style="position: relative; z-index: 3; display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; padding: 30px 56px 0 56px; animation: mkFade 0.8s ease-out 0.2s both">
+    <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 21px; font-weight: 700; color: rgba(255,255,255,0.92); letter-spacing: 0.22em; text-transform: uppercase; padding-top: 4px">Midas K Enterprise Portal</div>
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; gap: 8px">
+      <div style="display: flex; align-items: center; gap: 24px">
+        <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.24em">FAVORITES</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.75); letter-spacing: 0.04em">2026.06.12 (금)</div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; max-width: 860px">
+        <a href="https://blog.naver.com/cesmidask" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">01</span>마이더스K 공식블로그</a>
+        <a href="https://contents.premium.naver.com/midask/segu914" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">02</span>세특구원자</a>
+        <a href="https://www.01consulting.co.kr/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">03</span>YL합격 예측 시스템</a>
+        <a href="https://www.band.us/band/49091648/post" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">04</span>포스팅밴드</a>
+        <a href="https://blog.naver.com/cesmidask/224194368432" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">05</span>학종특강</a>
+        <a href="https://midasksegu-afk.github.io/brochure/midasK_brochure.html" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">06</span>브로슈어</a>
+        <a href="https://blog.naver.com/cesmidask/224154689417" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">07</span>학년로드맵 가이드</a>
+        <a href="https://skoologic.com/" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">08</span>스쿨로직</a>
+        <a href="https://blog.naver.com/cesmidask/223808239836" target="_blank" rel="noopener noreferrer" style="display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 13px; border-radius: 99px; background: rgba(22,30,40,0.55); border: 1px solid rgba(255,255,255,0.14); text-decoration: none; font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.8); white-space: nowrap; transition: background 0.2s ease, border 0.2s ease, color 0.2s ease" style-hover="background: rgba(125,170,215,0.22); border: 1px solid rgba(77,155,224,0.55); color: #ffffff"><span style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; font-weight: 700; color: #4d9be0">09</span>세특전략 컨설팅 가이드</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== main area ===== -->
+  <div style="position: relative; z-index: 2; flex: 1; display: flex; align-items: center; gap: 32px; padding: 8px 56px 8px 0">
+
+    <!-- ----- left: infographic motif ----- -->
+    <div style="position: relative; flex: 1; height: 790px; min-width: 1130px">
+
+      <!-- thick dark half-ring (crescent) -->
+      <div style="position: absolute; left: -195px; top: -10px; width: 810px; height: 810px; border-radius: 50%; border: 108px solid rgba(9,13,19,0.5); box-sizing: border-box; -webkit-mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); animation: mkFade 1s ease-out 0.35s both"></div>
+
+      <!-- white arc line in the middle of the band -->
+      <div style="position: absolute; left: -140px; top: 45px; width: 700px; height: 700px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.85); box-sizing: border-box; -webkit-mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); animation: mkFade 1s ease-out 0.5s both"></div>
+
+      <!-- orbit dots on the arc -->
+      <div style="position: absolute; left: 334px; top: 64px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 0.7s both, mkPulse 3.2s ease-in-out 1.6s infinite"></div>
+      <div style="position: absolute; left: 510px; top: 220px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 0.82s both, mkPulse 3.2s ease-in-out 1.9s infinite"></div>
+      <div style="position: absolute; left: 553px; top: 388px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 0.94s both, mkPulse 3.2s ease-in-out 2.2s infinite"></div>
+      <div style="position: absolute; left: 510px; top: 556px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 1.06s both, mkPulse 3.2s ease-in-out 2.5s infinite"></div>
+      <div style="position: absolute; left: 334px; top: 712px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 1.18s both, mkPulse 3.2s ease-in-out 2.8s infinite"></div>
+
+      <!-- connector lines (dot → card) -->
+      <div style="position: absolute; left: 346px; top: 70px; width: 130px; height: 2px; background: rgba(255,255,255,0.75); animation: mkFade 0.6s ease-out 0.9s both"></div>
+      <div style="position: absolute; left: 522px; top: 226px; width: 84px; height: 2px; background: rgba(255,255,255,0.75); animation: mkFade 0.6s ease-out 1s both"></div>
+      <div style="position: absolute; left: 565px; top: 394px; width: 86px; height: 2px; background: rgba(255,255,255,0.75); animation: mkFade 0.6s ease-out 1.1s both"></div>
+      <div style="position: absolute; left: 522px; top: 562px; width: 84px; height: 2px; background: rgba(255,255,255,0.75); animation: mkFade 0.6s ease-out 1.2s both"></div>
+      <div style="position: absolute; left: 346px; top: 718px; width: 130px; height: 2px; background: rgba(255,255,255,0.75); animation: mkFade 0.6s ease-out 1.3s both"></div>
+
+      <!-- central circle with thick halo + login merged in -->
+      <div style="position: absolute; left: -25px; top: 155px; width: 470px; height: 470px; animation: mkPop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.25s both">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: #ffffff; box-shadow: 0 0 0 68px rgba(238,243,248,0.16), 0 30px 60px rgba(10,16,24,0.45); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 56px; box-sizing: border-box">
+          <sc-if value="{{ !loggedIn }}">
+            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 88px; display: block">
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 19px; font-weight: 800; color: #2a3542; letter-spacing: 0.2em">LOGIN</div>
+            <div style="display: flex; flex-direction: column; gap: 9px; width: 270px">
+              <input id="mk-id" type="text" placeholder="아이디" style="height: 44px; border-radius: 9px; border: 1px solid #d4dce4; background: #f2f5f8; color: #2a3542; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; padding: 0 16px; outline: none; box-sizing: border-box; text-align: center" style-focus="border: 1px solid #3d8fd6; background: #ffffff">
+              <input id="mk-pw" type="password" placeholder="비밀번호" onKeyDown="{{ enterLogin }}" style="height: 44px; border-radius: 9px; border: 1px solid #d4dce4; background: #f2f5f8; color: #2a3542; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; padding: 0 16px; outline: none; box-sizing: border-box; text-align: center" style-focus="border: 1px solid #3d8fd6; background: #ffffff">
+              <button type="button" onClick="{{ doLogin }}" style="height: 46px; border: none; border-radius: 9px; background: linear-gradient(100deg, #4d9be0 0%, #3d8fd6 100%); color: #ffffff; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 0.14em; cursor: pointer; box-shadow: 0 10px 22px rgba(61,143,214,0.3)">{{ loginBtnText }}</button>
+              <sc-if value="{{ loginError }}">
+                <div style="font-size: 12px; color: #e05555; text-align: center; margin-top: 2px">{{ loginError }}</div>
+              </sc-if>
+            </div>
+            <div style="display: flex; align-items: center; gap: 7px">
+              <input id="mk-remember" type="checkbox" checked="{{ true }}" style="width: 15px; height: 15px; accent-color: #3d8fd6; cursor: pointer">
+              <label for="mk-remember" style="font-size: 12.5px; color: #7d8a99; cursor: pointer">아이디 저장</label>
+            </div>
+          </sc-if>
+          <sc-if value="{{ loggedIn }}">
+            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 64px; display: block">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+              <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #4d9be0; letter-spacing: 0.22em">AUTHENTICATED</div>
+              <div style="font-size: 13px; color: #2a3542; font-weight: 500">{{ userEmail }}</div>
+            </div>
+            <div style="width: 48px; height: 2px; background: linear-gradient(90deg, #4d9be0, #3d8fd6); border-radius: 99px"></div>
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: #2a3542; letter-spacing: 0.1em">WELCOME</div>
+            <div style="font-size: 12px; color: #7d8a99; letter-spacing: 0.06em">MIDAS K ENTERPRISE PORTAL</div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- 01 MEMBER MANAGEMENT (has submenu) -->
+      <div onMouseEnter="{{ enter1 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 470px; top: 13px; width: 500px; height: 114px; z-index: 6; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s both">
+        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a1 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div onClick="{{ toggle01 }}" style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b1 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">MEMBER MANAGEMENT</div>
+            <div style="font-size: 11px; color: #4d9be0">{{ caret01 }}</div>
+          </div>
+          <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">회원관리와 매칭 스케줄보드를<br>한 곳에서 관리합니다</div>
+        </div>
+        <div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 104px; height: 104px; border-radius: 50%; background: linear-gradient(165deg, #ffffff 0%, #e7ebf0 100%); box-shadow: 0 10px 22px rgba(10,16,24,0.35); display: flex; align-items: center; justify-content: center; pointer-events: none">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a3542" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div style="position: absolute; left: 412px; top: -16px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ffffff; background: rgba(35,46,58,0.6); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #ffffff">01</div>
+
+        <sc-if value="{{ sub01 }}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 122px; top: 120px; width: 290px; background: rgba(22,30,40,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(77,155,224,0.4); border-radius: 14px; box-shadow: 0 20px 44px rgba(8,12,18,0.55); padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 4px; animation: mkFadeUp 0.3s ease-out both">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: background 0.2s ease" style-hover="background: rgba(77,155,224,0.18)">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: #4d9be0; flex-shrink: 0"></div>
+              <div style="display: flex; flex-direction: column; gap: 1px">
+                <div style="font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em">MEMBER LIST</div>
+                <div style="font-size: 11.5px; color: rgba(255,255,255,0.55)">회원관리</div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; cursor: pointer; transition: background 0.2s ease" style-hover="background: rgba(77,155,224,0.18)">
+              <div style="width: 8px; height: 8px; border-radius: 50%; background: #4d9be0; flex-shrink: 0"></div>
+              <div style="display: flex; flex-direction: column; gap: 1px">
+                <div style="font-family: 'Montserrat', sans-serif; font-size: 12.5px; font-weight: 700; color: #ffffff; letter-spacing: 0.05em">MATCHING SCHEDULE BOARD</div>
+                <div style="font-size: 11.5px; color: rgba(255,255,255,0.55)">매칭 스케줄보드</div>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- 02 CONSULTING BOARD -->
+      <div onMouseEnter="{{ enter2 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 600px; top: 169px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.67s both">
+        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a2 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div onClick="{{ open02 }}" style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b2 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">CONSULTING BOARD</div>
+          <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">컨설팅 진행 현황과 이력을<br>보드에서 확인합니다</div>
+        </div>
+        <div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 104px; height: 104px; border-radius: 50%; background: linear-gradient(165deg, #ffffff 0%, #e7ebf0 100%); box-shadow: 0 10px 22px rgba(10,16,24,0.35); display: flex; align-items: center; justify-content: center; pointer-events: none">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a3542" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+        </div>
+        <div style="position: absolute; left: 412px; top: -16px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ffffff; background: rgba(35,46,58,0.6); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #ffffff">02</div>
+      </div>
+
+      <!-- 03 ADMISSION STRATEGY DATA -->
+      <div onMouseEnter="{{ enter3 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 645px; top: 337px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.79s both">
+        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a3 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b3 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; letter-spacing: 0.04em; white-space: nowrap">ADMISSION STRATEGY DATA</div>
+          <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">대입전략 수립을 위한<br>입시 데이터를 제공합니다</div>
+        </div>
+        <div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 104px; height: 104px; border-radius: 50%; background: linear-gradient(165deg, #ffffff 0%, #e7ebf0 100%); box-shadow: 0 10px 22px rgba(10,16,24,0.35); display: flex; align-items: center; justify-content: center; pointer-events: none">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a3542" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <div style="position: absolute; left: 412px; top: -16px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ffffff; background: rgba(35,46,58,0.6); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #ffffff">03</div>
+      </div>
+
+      <!-- 04 SETEUK SAVIOR -->
+      <div onMouseEnter="{{ enter4 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 600px; top: 505px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.91s both">
+        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a4 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b4 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">SEGU PRO AI</div>
+          <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">기재관리 · 주제추천 등<br>AI 스킬로 연결됩니다</div>
+        </div>
+        <div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 104px; height: 104px; border-radius: 50%; background: linear-gradient(165deg, #ffffff 0%, #e7ebf0 100%); box-shadow: 0 10px 22px rgba(10,16,24,0.35); display: flex; align-items: center; justify-content: center; pointer-events: none">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a3542" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+        </div>
+        <div style="position: absolute; left: 412px; top: -16px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ffffff; background: rgba(35,46,58,0.6); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #ffffff">04</div>
+      </div>
+
+      <!-- 05 BLOG MANAGEMENT -->
+      <div onMouseEnter="{{ enter5 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 470px; top: 661px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.03s both">
+        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a5 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b5 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">SALES MANAGEMENT</div>
+          <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">회사 매출 현황과 실적을<br>한눈에 관리합니다</div>
+        </div>
+        <div style="position: absolute; left: -12px; top: 50%; transform: translateY(-50%); width: 104px; height: 104px; border-radius: 50%; background: linear-gradient(165deg, #ffffff 0%, #e7ebf0 100%); box-shadow: 0 10px 22px rgba(10,16,24,0.35); display: flex; align-items: center; justify-content: center; pointer-events: none">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2a3542" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+        </div>
+        <div style="position: absolute; left: 412px; top: -16px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #ffffff; background: rgba(35,46,58,0.6); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: #ffffff">05</div>
+      </div>
+    </div>
+
+    <!-- ----- right: notice + schedules ----- -->
+    <div style="position: relative; width: 390px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px">
+
+      <!-- notice card -->
+      <div style="background: rgba(22,30,40,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; box-shadow: 0 24px 48px rgba(8,12,18,0.4); padding: 20px 24px 16px 24px; display: flex; flex-direction: column; gap: 11px; animation: mkSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.5s both">
+        <div style="display: flex; align-items: center; justify-content: space-between">
+          <div style="display: flex; align-items: baseline; gap: 8px">
+            <div style="font-size: 15px; font-weight: 700; color: #ffffff; letter-spacing: 0.04em">공지사항</div>
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: #4d9be0; letter-spacing: 0.18em">NOTICE</div>
+          </div>
+          <div style="font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.5); cursor: pointer; line-height: 1" style-hover="color: #ffffff">+</div>
+        </div>
+        <div style="height: 1px; background: rgba(255,255,255,0.12)"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 10px; cursor: pointer">
+            <div style="flex-shrink: 0; font-size: 10.5px; font-weight: 700; color: #4d9be0; border: 1px solid rgba(77,155,224,0.55); border-radius: 99px; padding: 2px 8px">공지</div>
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis" style-hover="color: #ffffff">2026년 상반기 컨설팅 일정 안내</div>
+            <div style="flex-shrink: 0; font-size: 11.5px; color: rgba(255,255,255,0.4)">06.10</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px; cursor: pointer">
+            <div style="flex-shrink: 0; font-size: 10.5px; font-weight: 700; color: #e8a44d; border: 1px solid rgba(232,164,77,0.55); border-radius: 99px; padding: 2px 8px">점검</div>
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.82); white-space: nowrap; overflow: hidden; text-overflow: ellipsis" style-hover="color: #ffffff">시스템 정기점검에 따른 일시 중단 안내 (6/14)</div>
+            <div style="flex-shrink: 0; font-size: 11.5px; color: rgba(255,255,255,0.4)">06.08</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- company schedule card -->
+      <div style="background: rgba(22,30,40,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; box-shadow: 0 24px 48px rgba(8,12,18,0.4); padding: 20px 24px 16px 24px; display: flex; flex-direction: column; gap: 11px; animation: mkSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.62s both">
+        <div style="display: flex; align-items: baseline; gap: 8px">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; letter-spacing: 0.08em">COMPANY SCHEDULE</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.5)">회사 주요 스케줄</div>
+        </div>
+        <div style="height: 1px; background: rgba(255,255,255,0.12)"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; color: #4d9be0; width: 70px">AM 11:00</div>
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">김민지 학생</div>
+            <div style="flex-shrink: 0; font-size: 11px; color: #8fc1ec; border: 1px solid rgba(77,155,224,0.4); border-radius: 99px; padding: 2px 9px">무료내방</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; color: #4d9be0; width: 70px">PM 03:45</div>
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">박규리 학생</div>
+            <div style="flex-shrink: 0; font-size: 11px; color: #8fc1ec; border: 1px solid rgba(77,155,224,0.4); border-radius: 99px; padding: 2px 9px">2차상담</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 700; color: #4d9be0; width: 70px">PM 04:00</div>
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">최현석 학생</div>
+            <div style="flex-shrink: 0; font-size: 11px; color: #8fc1ec; border: 1px solid rgba(77,155,224,0.4); border-radius: 99px; padding: 2px 9px">세특전략 컨설팅</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- personal schedule card -->
+      <div style="background: rgba(22,30,40,0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.14); border-radius: 18px; box-shadow: 0 24px 48px rgba(8,12,18,0.4); padding: 20px 24px 16px 24px; display: flex; flex-direction: column; gap: 11px; animation: mkSlideIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.74s both">
+        <div style="display: flex; align-items: baseline; gap: 8px">
+          <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; letter-spacing: 0.08em">PERSONAL SCHEDULE</div>
+          <div style="font-size: 11px; color: rgba(255,255,255,0.5)">개인 업무 스케줄</div>
+        </div>
+        <div style="height: 1px; background: rgba(255,255,255,0.12)"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">김민지 · 국어수행 주제추천</div>
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #ffffff; background: #d9534f; border-radius: 99px; padding: 3px 10px">D-DAY</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">최지연 · 수학수행 주제추천</div>
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #ffffff; background: #d9534f; border-radius: 99px; padding: 3px 10px">D-DAY</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="flex: 1; font-size: 13px; color: rgba(255,255,255,0.85)">한지원 · 동아리 기재관리</div>
+            <div style="flex-shrink: 0; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #ffffff; background: #e8a44d; border-radius: 99px; padding: 3px 10px">D-1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== footer ===== -->
+  <div style="position: relative; z-index: 2; text-align: center; padding: 0 0 20px 0; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 500; color: rgba(255,255,255,0.45); letter-spacing: 0.12em; animation: mkFade 1s ease-out 1s both">© 2026 MIDAS K. All Rights Reserved.</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { sub01: false, hov: 0, loading: false, error: null };
+
+  componentDidMount() {
+    const SUPABASE_URL = 'https://nrvbgpkhtkqeflprlott.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_dm6GqX2Frr8bmJIN0frDpQ_qH4B8HRX';
+    this.sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    this.sb.auth.getSession().then(({ data }) => {
+      if (data.session) this.setState({ loggedIn: true, userEmail: data.session.user.email });
+    });
+  }
+
+  handleLogin() {
+    const id = document.getElementById('mk-id').value.trim();
+    const pw = document.getElementById('mk-pw').value.trim();
+    if (!id || !pw) { this.setState({ error: '아이디와 비밀번호를 입력해주세요' }); return; }
+    this.setState({ loading: true, error: null });
+    this.sb.auth.signInWithPassword({ email: id, password: pw }).then(({ error }) => {
+      if (error) {
+        this.setState({ loading: false, error: '아이디 또는 비밀번호가 올바르지 않습니다' });
+      } else {
+        this.setState({ loading: false, loggedIn: true, userEmail: document.getElementById('mk-id').value.trim() });
+      }
+    });
+  }
+
+  renderVals() {
+    const set = (i) => () => this.setState({ hov: i });
+    const bar = (i) => (this.state.hov === i ? "rgba(125,170,215,0.20)" : "linear-gradient(100deg, #2c3845 0%, #222d39 100%)");
+    const arr = (i) => (this.state.hov === i ? "rgba(125,170,215,0.28)" : "#232e3a");
+    const self = this;
+    return {
+      sub01: this.state.sub01,
+      caret01: this.state.sub01 ? "▲" : "▼",
+      toggle01: () => this.setState((s) => ({ sub01: !s.sub01 })),
+      open02: () => window.open("https://consulting-board.vercel.app/index.html", "_blank", "noopener"),
+      leave: set(0),
+      enter1: set(1), enter2: set(2), enter3: set(3), enter4: set(4), enter5: set(5),
+      b1: bar(1), b2: bar(2), b3: bar(3), b4: bar(4), b5: bar(5),
+      a1: arr(1), a2: arr(2), a3: arr(3), a4: arr(4), a5: arr(5),
+      loggedIn: this.state.loggedIn,
+      userEmail: this.state.userEmail || '',
+      doLogin: () => self.handleLogin(),
+      enterLogin: (e) => { if (e.key === 'Enter') self.handleLogin(); },
+      loginBtnText: this.state.loading ? '로그인 중...' : 'LOGIN',
+      loginError: this.state.error,
+    };
+  }
+}
+</script>
+</body>
+</html>
