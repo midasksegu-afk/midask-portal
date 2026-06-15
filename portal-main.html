@@ -61,11 +61,17 @@
     <!-- ----- left: infographic motif ----- -->
     <div style="position: relative; flex: 1; height: 790px; min-width: 1130px">
 
-      <!-- thick dark half-ring (crescent) -->
-      <div style="position: absolute; left: -195px; top: -10px; width: 810px; height: 810px; border-radius: 50%; border: 108px solid rgba(9,13,19,0.5); box-sizing: border-box; -webkit-mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); animation: mkFade 1s ease-out 0.35s both"></div>
+      <!-- thick dark half-ring (crescent) — concentric with the login circle (center 210,390) -->
+      <div style="position: absolute; left: -204px; top: -24px; width: 828px; height: 828px; border-radius: 50%; border: 124px solid rgba(12,17,25,0.82); box-sizing: border-box; -webkit-mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); animation: mkFade 1s ease-out 0.35s both"></div>
+      <!-- inner glossy sheen of the band -->
+      <div style="position: absolute; left: -204px; top: -24px; width: 828px; height: 828px; border-radius: 50%; border: 124px solid transparent; border-top-color: rgba(94,130,168,0.22); border-left-color: rgba(94,130,168,0.14); box-sizing: border-box; -webkit-mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); mask: conic-gradient(from 8deg, #000 0deg 164deg, transparent 164deg 360deg); animation: mkFade 1s ease-out 0.4s both"></div>
+      <!-- outer rim highlight -->
+      <div style="position: absolute; left: -204px; top: -24px; width: 828px; height: 828px; border-radius: 50%; border: 1.5px solid rgba(180,205,232,0.45); box-sizing: border-box; -webkit-mask: conic-gradient(from 8deg, #000 0deg 162deg, transparent 162deg 360deg); mask: conic-gradient(from 8deg, #000 0deg 162deg, transparent 162deg 360deg); animation: mkFade 1s ease-out 0.45s both"></div>
+      <!-- inner rim highlight -->
+      <div style="position: absolute; left: -80px; top: 100px; width: 580px; height: 580px; border-radius: 50%; border: 1.5px solid rgba(150,180,212,0.3); box-sizing: border-box; -webkit-mask: conic-gradient(from 12deg, #000 0deg 156deg, transparent 156deg 360deg); mask: conic-gradient(from 12deg, #000 0deg 156deg, transparent 156deg 360deg); animation: mkFade 1s ease-out 0.5s both"></div>
 
       <!-- white arc line in the middle of the band -->
-      <div style="position: absolute; left: -140px; top: 45px; width: 700px; height: 700px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.85); box-sizing: border-box; -webkit-mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); animation: mkFade 1s ease-out 0.5s both"></div>
+      <div style="position: absolute; left: -142px; top: 38px; width: 704px; height: 704px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.9); box-sizing: border-box; -webkit-mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); mask: conic-gradient(from 10deg, #000 0deg 160deg, transparent 160deg 360deg); animation: mkFade 1s ease-out 0.55s both"></div>
 
       <!-- orbit dots on the arc -->
       <div style="position: absolute; left: 334px; top: 64px; width: 14px; height: 14px; border-radius: 50%; background: #ffffff; animation: mkPop 0.5s ease-out 0.7s both, mkPulse 3.2s ease-in-out 1.6s infinite"></div>
@@ -115,7 +121,7 @@
 
       <!-- 01 MEMBER MANAGEMENT (has submenu) -->
       <div onMouseEnter="{{ enter1 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 470px; top: 13px; width: 500px; height: 114px; z-index: 6; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.55s both">
-        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a1 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 374px; top: 50%; width: 52px; height: 52px; transform: translateY(-50%) rotate(45deg); background: linear-gradient(135deg, #33414f 0%, #222d39 100%); border: 1.5px solid rgba(130,178,222,0.6); border-radius: 6px; box-shadow: 0 6px 16px rgba(10,16,24,0.4), 0 0 16px rgba(77,155,224,0.22); pointer-events: none"></div>
         <div onClick="{{ toggle01 }}" style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b1 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
           <div style="display: flex; align-items: center; gap: 8px">
             <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">MEMBER MANAGEMENT</div>
@@ -150,7 +156,7 @@
 
       <!-- 02 CONSULTING BOARD -->
       <div onMouseEnter="{{ enter2 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 600px; top: 169px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.67s both">
-        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a2 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 374px; top: 50%; width: 52px; height: 52px; transform: translateY(-50%) rotate(45deg); background: linear-gradient(135deg, #33414f 0%, #222d39 100%); border: 1.5px solid rgba(130,178,222,0.6); border-radius: 6px; box-shadow: 0 6px 16px rgba(10,16,24,0.4), 0 0 16px rgba(77,155,224,0.22); pointer-events: none"></div>
         <div onClick="{{ open02 }}" style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b2 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
           <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">CONSULTING BOARD</div>
           <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">컨설팅 진행 현황과 이력을<br>보드에서 확인합니다</div>
@@ -163,7 +169,7 @@
 
       <!-- 03 ADMISSION STRATEGY DATA -->
       <div onMouseEnter="{{ enter3 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 645px; top: 337px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.79s both">
-        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a3 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 374px; top: 50%; width: 52px; height: 52px; transform: translateY(-50%) rotate(45deg); background: linear-gradient(135deg, #33414f 0%, #222d39 100%); border: 1.5px solid rgba(130,178,222,0.6); border-radius: 6px; box-shadow: 0 6px 16px rgba(10,16,24,0.4), 0 0 16px rgba(77,155,224,0.22); pointer-events: none"></div>
         <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b3 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
           <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #ffffff; letter-spacing: 0.04em; white-space: nowrap">ADMISSION STRATEGY DATA</div>
           <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">대입전략 수립을 위한<br>입시 데이터를 제공합니다</div>
@@ -176,7 +182,7 @@
 
       <!-- 04 SETEUK SAVIOR -->
       <div onMouseEnter="{{ enter4 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 600px; top: 505px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.91s both">
-        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a4 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 374px; top: 50%; width: 52px; height: 52px; transform: translateY(-50%) rotate(45deg); background: linear-gradient(135deg, #33414f 0%, #222d39 100%); border: 1.5px solid rgba(130,178,222,0.6); border-radius: 6px; box-shadow: 0 6px 16px rgba(10,16,24,0.4), 0 0 16px rgba(77,155,224,0.22); pointer-events: none"></div>
         <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b4 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
           <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">SEGU PRO AI</div>
           <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">기재관리 · 주제추천 등<br>AI 스킬로 연결됩니다</div>
@@ -189,7 +195,7 @@
 
       <!-- 05 BLOG MANAGEMENT -->
       <div onMouseEnter="{{ enter5 }}" onMouseLeave="{{ leave }}" style="position: absolute; left: 470px; top: 661px; width: 500px; height: 114px; animation: mkSlideIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 1.03s both">
-        <div style="position: absolute; left: 350px; top: 50%; width: 80px; height: 80px; background: {{ a5 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transform: translateY(-50%) rotate(45deg); border-radius: 10px; transition: background 0.25s ease"></div>
+        <div style="position: absolute; left: 374px; top: 50%; width: 52px; height: 52px; transform: translateY(-50%) rotate(45deg); background: linear-gradient(135deg, #33414f 0%, #222d39 100%); border: 1.5px solid rgba(130,178,222,0.6); border-radius: 6px; box-shadow: 0 6px 16px rgba(10,16,24,0.4), 0 0 16px rgba(77,155,224,0.22); pointer-events: none"></div>
         <div style="position: absolute; left: 0; top: 0; width: 400px; height: 114px; background: {{ b5 }}; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 22px; box-shadow: 0 16px 32px rgba(10,16,24,0.35); display: flex; flex-direction: column; justify-content: center; gap: 5px; padding-left: 122px; padding-right: 24px; box-sizing: border-box; cursor: pointer; transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease" style-hover="transform: translateX(8px); box-shadow: 0 20px 40px rgba(10,16,24,0.5), inset 0 0 0 1px rgba(77,155,224,0.5)">
           <div style="font-family: 'Montserrat', sans-serif; font-size: 16px; font-weight: 700; color: #ffffff; letter-spacing: 0.06em">SALES MANAGEMENT</div>
           <div style="font-size: 12.5px; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; line-height: 1.5">회사 매출 현황과 실적을<br>한눈에 관리합니다</div>
