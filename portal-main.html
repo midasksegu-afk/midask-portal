@@ -89,9 +89,9 @@
 
       <!-- central circle with thick halo + login merged in -->
       <div style="position: absolute; left: -25px; top: 155px; width: 470px; height: 470px; animation: mkPop 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) 0.25s both">
-        <div style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(145deg, #ffffff 0%, #edf2f8 55%, #dce6f0 100%); box-shadow: 0 0 0 68px rgba(238,243,248,0.16), 0 30px 60px rgba(10,16,24,0.45), inset 0 6px 18px rgba(255,255,255,1), inset 0 -8px 24px rgba(160,185,210,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 56px; box-sizing: border-box">
+        <div style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(145deg, #ffffff 0%, #f8f9fb 55%, #f0f2f5 100%); box-shadow: 0 0 0 68px rgba(238,243,248,0.16), 0 30px 60px rgba(10,16,24,0.45), inset 0 6px 18px rgba(255,255,255,1), inset 0 -8px 24px rgba(160,185,210,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; padding: 56px; box-sizing: border-box">
           <sc-if value="{{ !loggedIn }}">
-            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 88px; display: block; background: #f0f4f8; border-radius: 8px; padding: 4px">
+            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 88px; display: block">
             <div style="font-family: 'Montserrat', sans-serif; font-size: 19px; font-weight: 800; color: #2a3542; letter-spacing: 0.2em">LOGIN</div>
             <div style="display: flex; flex-direction: column; gap: 9px; width: 270px">
               <input id="mk-id" type="text" placeholder="아이디" style="height: 44px; border-radius: 9px; border: 1px solid #d4dce4; background: #f2f5f8; color: #2a3542; font-family: 'Noto Sans KR', sans-serif; font-size: 14px; padding: 0 16px; outline: none; box-sizing: border-box; text-align: center" style-focus="border: 1px solid #3d8fd6; background: #ffffff">
@@ -107,7 +107,7 @@
             </div>
           </sc-if>
           <sc-if value="{{ loggedIn }}">
-            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 88px; display: block; background: #f0f4f8; border-radius: 8px; padding: 4px">
+            <img src="assets/mk-logo.png" alt="MIDAS K" style="width: 88px; display: block">
             <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
               <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; color: #4d9be0; letter-spacing: 0.22em">AUTHENTICATED</div>
               <div style="font-size: 13px; color: #2a3542; font-weight: 500">{{ userEmail }}</div>
